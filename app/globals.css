@@ -3447,6 +3447,81 @@ p {
   }
 }
 
+@media (min-width: 901px) {
+  body {
+    --page-edge: clamp(28px, 3vw, 52px);
+    --content-wide: min(calc(100vw - (var(--page-edge) * 2)), 1440px);
+  }
+
+  .site-nav {
+    top: clamp(28px, 3vw, 46px);
+    min-height: clamp(72px, 5vw, 88px);
+    gap: clamp(30px, 3.5vw, 56px);
+    padding: 10px clamp(12px, 1vw, 18px) 10px clamp(24px, 2vw, 34px);
+  }
+
+  .nav-brand {
+    font-size: clamp(2.65rem, 2.8vw, 3.5rem);
+  }
+
+  .nav-links {
+    gap: clamp(28px, 2.7vw, 44px);
+  }
+
+  .nav-links a,
+  .nav-action {
+    font-size: clamp(1.35rem, 1.45vw, 1.75rem);
+  }
+
+  .nav-action {
+    min-height: clamp(52px, 3.6vw, 64px);
+    padding-inline: clamp(28px, 2.7vw, 46px);
+  }
+
+  .bao-home {
+    padding: clamp(26px, 3vw, 48px);
+  }
+
+  .hero-copy {
+    width: min(92vw, 1320px);
+    gap: clamp(26px, 3vw, 46px);
+  }
+
+  .wordmark-line {
+    width: min(92vw, 1320px);
+  }
+
+  .title-initial {
+    font-size: clamp(10rem, 21vw, 19rem);
+  }
+
+  .title-rest {
+    font-size: clamp(2.6rem, 5vw, 5.4rem);
+  }
+
+  .hero-description {
+    max-width: min(1120px, 88vw);
+    font-size: clamp(2.35rem, 3.65vw, 4.2rem);
+  }
+
+  .hero-actions {
+    width: min(100%, 680px);
+    gap: clamp(14px, 1.4vw, 22px);
+  }
+
+  .hero-button {
+    min-height: clamp(60px, 4.5vw, 74px);
+    padding-inline: clamp(22px, 2.3vw, 36px);
+    font-size: clamp(1.2rem, 1.35vw, 1.6rem);
+  }
+
+  .sticker {
+    min-width: clamp(104px, 7.8vw, 140px);
+    min-height: clamp(44px, 3.8vw, 60px);
+    font-size: clamp(1rem, 1.25vw, 1.5rem);
+  }
+}
+
 @media (max-width: 900px) {
 
   .hero-actions {
