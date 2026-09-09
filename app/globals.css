@@ -3588,9 +3588,9 @@ p {
   .services-preview-section,
   .why-bao-section,
   .case-section {
-    gap: clamp(30px, 3vw, 46px);
+    gap: clamp(24px, 2.4vw, 36px);
     padding-right: var(--page-edge);
-    padding-bottom: clamp(64px, 7vh, 88px);
+    padding-bottom: clamp(48px, 5.5vh, 64px);
     padding-left: var(--page-edge);
   }
 
@@ -3606,17 +3606,17 @@ p {
   .about-kicker p,
   .founder-kicker p,
   .founder-eyebrow {
-    font-size: clamp(1.05rem, 1.1vw, 1.25rem);
+    font-size: clamp(0.95rem, 1vw, 1.1rem);
   }
 
   .about-intro {
     grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
-    gap: clamp(34px, 4vw, 64px);
+    gap: clamp(28px, 3.2vw, 48px);
   }
 
   .about-intro h2,
   .clarity-section > h2 {
-    font-size: clamp(3.6rem, 5.5vw, 6rem);
+    font-size: clamp(3rem, 4.2vw, 4.6rem);
   }
 
   .about-copy {
@@ -3625,274 +3625,274 @@ p {
 
   .about-copy p,
   .founder-copy p {
-    font-size: clamp(1.05rem, 1.25vw, 1.4rem);
+    font-size: clamp(0.95rem, 1.05vw, 1.15rem);
     line-height: 1.42;
   }
 
   .clarity-section {
-    padding-top: clamp(64px, 7vh, 88px);
+    padding-top: clamp(48px, 5.5vh, 64px);
   }
 
   .clarity-column {
-    padding: clamp(28px, 2.5vw, 38px) clamp(26px, 3vw, 46px);
+    padding: clamp(20px, 2vw, 30px) clamp(22px, 2.4vw, 36px);
   }
 
   .clarity-column h3 {
-    margin-bottom: clamp(20px, 2vw, 28px);
-    font-size: clamp(2.2rem, 2.8vw, 3.2rem);
+    margin-bottom: clamp(14px, 1.5vw, 20px);
+    font-size: clamp(1.8rem, 2.2vw, 2.5rem);
   }
 
   .clarity-column li {
-    min-height: clamp(62px, 6vh, 76px);
-    grid-template-columns: 40px minmax(0, 1fr);
-    gap: 16px;
-    font-size: clamp(1rem, 1.1vw, 1.25rem);
+    min-height: clamp(52px, 5vh, 62px);
+    grid-template-columns: 34px minmax(0, 1fr);
+    gap: 12px;
+    font-size: clamp(0.9rem, 0.95vw, 1.05rem);
   }
 
   .clarity-before {
-    padding-right: clamp(42px, 4vw, 64px);
+    padding-right: clamp(34px, 3.2vw, 48px);
   }
 
   .clarity-after {
-    padding-left: clamp(48px, 4.4vw, 72px);
+    padding-left: clamp(38px, 3.5vw, 54px);
   }
 
   .clarity-icon {
-    width: 40px;
-    font-size: 1.1rem;
+    width: 34px;
+    font-size: 0.95rem;
   }
 
   .founder-section {
     min-height: auto;
-    padding-top: clamp(72px, 8vh, 96px);
+    padding-top: clamp(56px, 6vh, 72px);
   }
 
   .founder-grid {
     grid-template-columns: minmax(300px, 0.76fr) minmax(0, 1.24fr);
-    gap: clamp(40px, 5vw, 76px);
+    gap: clamp(32px, 4vw, 54px);
   }
 
   .founder-portrait {
-    aspect-ratio: 2 / 2.3;
+    aspect-ratio: 2 / 2.15;
   }
 
   .founder-profile figcaption {
-    min-height: 88px;
-    padding: clamp(20px, 1.8vw, 28px);
+    min-height: 72px;
+    padding: clamp(16px, 1.5vw, 22px);
   }
 
   .founder-profile h3 {
-    font-size: clamp(2rem, 2.3vw, 2.7rem);
+    font-size: clamp(1.65rem, 1.9vw, 2.15rem);
   }
 
   .founder-story {
-    gap: clamp(18px, 2vw, 28px);
+    gap: clamp(14px, 1.5vw, 20px);
   }
 
   .founder-story h2 {
-    font-size: clamp(3.2rem, 4.4vw, 5rem);
+    font-size: clamp(2.6rem, 3.4vw, 3.8rem);
   }
 
   .founder-copy {
-    gap: 16px;
+    gap: 12px;
   }
 
   .services-preview-section,
   .why-bao-section {
-    padding-top: clamp(72px, 8vh, 96px);
+    padding-top: clamp(56px, 6vh, 72px);
   }
 
   .services-preview-header,
   .why-bao-header {
-    gap: clamp(18px, 2vw, 28px);
+    gap: clamp(14px, 1.5vw, 20px);
   }
 
   .services-preview-header h2,
   .why-bao-header h2 {
-    font-size: clamp(3.8rem, 5vw, 5.6rem);
+    font-size: clamp(3rem, 3.8vw, 4.2rem);
   }
 
   .services-preview-list {
-    gap: clamp(22px, 2vw, 30px);
+    gap: clamp(16px, 1.5vw, 22px);
   }
 
   .service-preview {
-    height: clamp(390px, 45vh, 470px);
+    height: clamp(320px, 37vh, 370px);
   }
 
   .service-preview-content {
-    gap: 28px;
-    padding: clamp(30px, 3vw, 46px);
+    gap: 20px;
+    padding: clamp(24px, 2.3vw, 34px);
   }
 
   .service-preview-copy {
-    gap: clamp(16px, 1.7vw, 24px);
+    gap: clamp(12px, 1.2vw, 16px);
   }
 
   .service-preview-copy h3 {
-    font-size: clamp(2.8rem, 3.6vw, 4.1rem);
+    font-size: clamp(2.2rem, 2.7vw, 3rem);
   }
 
   .service-preview-copy > p,
   .service-preview-copy li {
-    font-size: clamp(1rem, 1.12vw, 1.3rem);
+    font-size: clamp(0.9rem, 0.98vw, 1.1rem);
   }
 
   .service-preview-copy ul {
-    gap: 10px;
+    gap: 7px;
   }
 
   .service-preview-button {
-    min-height: 56px;
-    padding-inline: 28px;
-    font-size: clamp(1.3rem, 1.55vw, 1.8rem);
+    min-height: 48px;
+    padding-inline: 24px;
+    font-size: clamp(1.1rem, 1.25vw, 1.4rem);
   }
 
   .why-bao-content {
-    min-height: clamp(360px, 42vh, 440px);
-    gap: clamp(40px, 5vw, 72px);
-    padding: clamp(38px, 4vw, 58px);
+    min-height: clamp(300px, 35vh, 350px);
+    gap: clamp(30px, 4vw, 52px);
+    padding: clamp(28px, 3vw, 40px);
   }
 
   .why-bao-tab-list {
-    top: 38px;
-    left: 38px;
+    top: 28px;
+    left: 28px;
   }
 
   .why-bao-tab-list [data-slot='tabs-trigger'] {
-    width: 54px;
-    height: 54px;
-    font-size: 2rem;
+    width: 46px;
+    height: 46px;
+    font-size: 1.65rem;
   }
 
   .why-bao-copy {
-    gap: 18px;
-    padding-top: 68px;
+    gap: 14px;
+    padding-top: 56px;
   }
 
   .why-bao-copy h3 {
-    font-size: clamp(3rem, 3.8vw, 4.4rem);
+    font-size: clamp(2.4rem, 2.9vw, 3.2rem);
   }
 
   .why-bao-copy > p:last-child {
-    font-size: clamp(1.5rem, 1.8vw, 2.1rem);
+    font-size: clamp(1.2rem, 1.4vw, 1.55rem);
   }
 
   .why-bao-visual {
-    width: min(100%, 360px);
+    width: min(100%, 300px);
   }
 
   .service-detail-section,
   .service-story-section {
-    gap: clamp(44px, 5vh, 62px);
-    padding-bottom: clamp(64px, 7vh, 90px);
+    gap: clamp(32px, 4vh, 44px);
+    padding-bottom: clamp(48px, 5.5vh, 64px);
   }
 
   .services-page-header {
-    height: clamp(440px, 52vh, 540px);
+    height: clamp(360px, 42vh, 430px);
   }
 
   .services-page-header-copy {
-    gap: 22px;
-    padding: clamp(42px, 4vw, 60px);
+    gap: 16px;
+    padding: clamp(32px, 3vw, 44px);
   }
 
   .services-page-kicker,
   .service-story-kicker {
-    font-size: clamp(1.25rem, 1.4vw, 1.6rem);
+    font-size: clamp(1.05rem, 1.15vw, 1.3rem);
   }
 
   .services-page-header h1 {
-    font-size: clamp(4.2rem, 5.3vw, 6rem);
+    font-size: clamp(3.2rem, 4vw, 4.5rem);
   }
 
   .services-page-description,
   .service-story-header > p:last-child,
   .service-story-lead {
-    font-size: clamp(1.05rem, 1.2vw, 1.4rem);
+    font-size: clamp(0.95rem, 1vw, 1.15rem);
   }
 
   .service-detail-card {
-    min-height: clamp(470px, 56vh, 560px);
-    grid-template-columns: minmax(360px, 0.78fr) minmax(0, 1.22fr);
+    min-height: clamp(390px, 46vh, 460px);
+    grid-template-columns: minmax(320px, 0.78fr) minmax(0, 1.22fr);
   }
 
   .service-detail-content {
-    gap: 26px;
-    padding: clamp(34px, 3.5vw, 50px);
+    gap: 20px;
+    padding: clamp(26px, 2.7vw, 38px);
   }
 
   .service-detail-number {
-    width: 64px;
-    height: 54px;
-    font-size: 2.2rem;
+    width: 54px;
+    height: 46px;
+    font-size: 1.8rem;
   }
 
   .service-detail-intro {
-    gap: 16px;
+    gap: 12px;
   }
 
   .service-detail-intro h2 {
-    font-size: clamp(3.2rem, 4vw, 4.5rem);
+    font-size: clamp(2.6rem, 3.1vw, 3.5rem);
   }
 
   .service-detail-intro p {
-    font-size: clamp(1.45rem, 1.7vw, 1.95rem);
+    font-size: clamp(1.15rem, 1.3vw, 1.45rem);
   }
 
   .service-deliverables {
-    gap: 14px;
+    gap: 10px;
   }
 
   .service-deliverables h3,
   .service-labels span {
-    font-size: clamp(1.05rem, 1.15vw, 1.3rem);
+    font-size: clamp(0.9rem, 0.95vw, 1.05rem);
   }
 
   .service-labels span {
-    min-height: 40px;
-    padding-inline: 18px;
+    min-height: 34px;
+    padding-inline: 14px;
   }
 
   .service-detail-button {
-    min-height: 56px;
-    padding-inline: 28px;
-    font-size: clamp(1.35rem, 1.5vw, 1.7rem);
+    min-height: 48px;
+    padding-inline: 24px;
+    font-size: clamp(1.1rem, 1.25vw, 1.4rem);
   }
 
   .service-detail-media {
-    height: clamp(470px, 56vh, 560px);
+    height: clamp(390px, 46vh, 460px);
   }
 
   .service-story-header {
-    gap: 18px;
+    gap: 14px;
   }
 
   .service-story-header h1 {
-    max-width: 1120px;
-    font-size: clamp(4.4rem, 5.8vw, 6.6rem);
+    max-width: 980px;
+    font-size: clamp(3.3rem, 4.3vw, 4.8rem);
   }
 
   .service-story-hero {
-    aspect-ratio: 16 / 6;
+    aspect-ratio: 16 / 5;
   }
 
   .service-story-layout {
     grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.6fr);
-    gap: clamp(42px, 5vw, 72px);
+    gap: clamp(32px, 4vw, 54px);
   }
 
   .service-story-copy {
-    gap: clamp(36px, 4vw, 56px);
+    gap: clamp(28px, 3vw, 40px);
   }
 
   .service-story-copy section {
-    gap: 18px;
+    gap: 14px;
   }
 
   .service-story-copy h2,
   .service-story-cta h2 {
-    font-size: clamp(2.6rem, 3vw, 3.5rem);
+    font-size: clamp(2.1rem, 2.4vw, 2.7rem);
   }
 
   .service-story-copy ul {
@@ -3901,27 +3901,27 @@ p {
 
   .service-story-copy li,
   .service-story-facts dd {
-    font-size: clamp(1rem, 1.1vw, 1.25rem);
+    font-size: clamp(0.9rem, 0.95vw, 1.05rem);
   }
 
   .service-story-facts > div {
-    gap: 10px;
-    padding: 24px;
+    gap: 8px;
+    padding: 18px;
   }
 
   .service-story-facts dt {
-    font-size: clamp(1.25rem, 1.35vw, 1.5rem);
+    font-size: clamp(1.05rem, 1.1vw, 1.2rem);
   }
 
   .service-story-cta a,
   .service-story-pagination a,
   .service-story-next {
-    min-height: 52px;
-    font-size: clamp(1.35rem, 1.55vw, 1.8rem);
+    min-height: 46px;
+    font-size: clamp(1.1rem, 1.25vw, 1.4rem);
   }
 
   .service-story-pagination {
-    min-height: 96px;
+    min-height: 76px;
   }
 
   .case-section {
@@ -3929,209 +3929,209 @@ p {
   }
 
   .case-intro {
-    gap: clamp(30px, 4vw, 60px);
+    gap: clamp(24px, 3vw, 44px);
   }
 
   .case-intro h2 {
-    font-size: clamp(3.8rem, 5vw, 5.6rem);
+    font-size: clamp(3rem, 3.8vw, 4.2rem);
   }
 
   .case-intro p {
-    font-size: clamp(1.15rem, 1.3vw, 1.5rem);
+    font-size: clamp(1rem, 1.05vw, 1.2rem);
   }
 
   .case-bar > button {
-    padding-block: clamp(22px, 2.4vw, 32px);
-    font-size: clamp(1.8rem, 2.1vw, 2.5rem);
+    padding-block: clamp(16px, 1.7vw, 22px);
+    font-size: clamp(1.45rem, 1.6vw, 1.8rem);
   }
 
   .case-plus {
-    font-size: clamp(2.5rem, 3vw, 3.5rem);
+    font-size: clamp(2rem, 2.2vw, 2.5rem);
   }
 
   .case-panel-inner {
-    padding-bottom: 32px;
+    padding-bottom: 24px;
   }
 
   .case-expanded-copy p,
   .performance-list {
-    font-size: clamp(1.05rem, 1.2vw, 1.4rem);
+    font-size: clamp(0.95rem, 1vw, 1.15rem);
   }
 
   .performance-case {
-    gap: clamp(30px, 4vw, 58px);
+    gap: clamp(24px, 3vw, 42px);
   }
 
   .case-gallery {
-    margin-inline: 30px;
-    padding: 24px;
+    margin-inline: 24px;
+    padding: 18px;
   }
 
   .cta-section {
-    min-height: clamp(420px, 50vh, 500px);
-    padding: clamp(64px, 7vh, 88px) var(--page-edge);
+    min-height: clamp(340px, 40vh, 400px);
+    padding: clamp(48px, 5.5vh, 64px) var(--page-edge);
   }
 
   .cta-inner,
   .cta-copy {
-    gap: clamp(22px, 2.5vw, 34px);
+    gap: clamp(16px, 1.8vw, 24px);
   }
 
   .cta-kicker p {
-    font-size: clamp(1.15rem, 1.25vw, 1.45rem);
+    font-size: clamp(1rem, 1.05vw, 1.2rem);
   }
 
   .cta-copy h2 {
-    font-size: clamp(3.6rem, 5vw, 5.8rem);
+    font-size: clamp(2.8rem, 3.8vw, 4.2rem);
   }
 
   .cta-copy p {
-    font-size: clamp(1.1rem, 1.3vw, 1.5rem);
+    font-size: clamp(0.95rem, 1.05vw, 1.2rem);
   }
 
   .cta-button {
-    min-height: 60px;
-    padding-inline: 32px;
-    font-size: clamp(1.3rem, 1.5vw, 1.75rem);
+    min-height: 50px;
+    padding-inline: 26px;
+    font-size: clamp(1.1rem, 1.25vw, 1.4rem);
   }
 
   .faq-section {
-    gap: clamp(30px, 3vh, 40px);
+    gap: clamp(22px, 2.4vh, 28px);
     padding-top: clamp(132px, 14vh, 156px);
-    padding-bottom: clamp(64px, 7vh, 88px);
+    padding-bottom: clamp(48px, 5.5vh, 64px);
   }
 
   .faq-header h1 {
-    font-size: clamp(5rem, 6.5vw, 7rem);
+    font-size: clamp(4rem, 5vw, 5.3rem);
   }
 
   .faq-list {
-    width: min(920px, 100%);
-    gap: 12px;
+    width: min(840px, 100%);
+    gap: 10px;
   }
 
   .faq-question {
-    min-height: 68px;
-    gap: 16px;
-    padding: 14px 22px;
-    border-radius: 24px;
+    min-height: 58px;
+    gap: 14px;
+    padding: 11px 18px;
+    border-radius: 20px;
   }
 
   .faq-number {
-    font-size: 1.45rem;
+    font-size: 1.2rem;
   }
 
   .faq-question-text {
-    font-size: clamp(1.45rem, 1.65vw, 1.85rem);
+    font-size: clamp(1.15rem, 1.3vw, 1.4rem);
   }
 
   .faq-toggle {
-    width: 42px;
-    height: 42px;
+    width: 36px;
+    height: 36px;
   }
 
   .faq-answer {
-    padding: 20px 26px;
+    padding: 16px 20px;
   }
 
   .faq-answer p {
-    font-size: clamp(1rem, 1.08vw, 1.2rem);
+    font-size: clamp(0.9rem, 0.95vw, 1.05rem);
   }
 
   .faq-closing {
-    font-size: clamp(3rem, 3.8vw, 4.4rem);
+    font-size: clamp(2.4rem, 2.9vw, 3.2rem);
   }
 
   .project-page {
-    padding-bottom: clamp(72px, 8vh, 100px);
+    padding-bottom: clamp(56px, 6vh, 72px);
   }
 
   .project-page-hero {
-    min-height: clamp(460px, 54vh, 540px);
-    padding: clamp(132px, 14vh, 156px) var(--page-edge) clamp(110px, 12vh, 140px);
+    min-height: clamp(360px, 43vh, 430px);
+    padding: clamp(132px, 14vh, 156px) var(--page-edge) clamp(88px, 10vh, 110px);
   }
 
   .project-page-hero-inner {
-    gap: 18px;
+    gap: 14px;
   }
 
   .project-page-hero h1 {
-    font-size: clamp(4.5rem, 5.8vw, 6.6rem);
+    font-size: clamp(3.4rem, 4.3vw, 4.8rem);
   }
 
   .project-page-intro {
-    font-size: clamp(1.05rem, 1.15vw, 1.3rem);
+    font-size: clamp(0.95rem, 1vw, 1.1rem);
   }
 
   .project-form-shell {
-    max-width: 980px;
-    margin-top: -100px;
+    max-width: 900px;
+    margin-top: -80px;
   }
 
   .project-form {
-    gap: 24px 28px;
-    padding: clamp(30px, 3vw, 44px);
+    gap: 18px 22px;
+    padding: clamp(24px, 2.4vw, 34px);
   }
 
   .project-field label,
   .project-field input,
   .project-field select,
   .project-field textarea {
-    font-size: clamp(0.95rem, 1vw, 1.1rem);
+    font-size: clamp(0.9rem, 0.92vw, 1rem);
   }
 
   .project-field input,
   .project-field select {
-    min-height: 56px;
+    min-height: 50px;
   }
 
   .project-field textarea {
-    min-height: 150px;
+    min-height: 130px;
   }
 
   .project-submit,
   .project-email-card {
-    min-height: 88px;
+    min-height: 78px;
   }
 
   .project-submit {
-    font-size: 1.5rem;
+    font-size: 1.3rem;
   }
 
   .project-email-card {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .legal-page {
-    padding: clamp(132px, 14vh, 156px) var(--page-edge) clamp(72px, 8vh, 100px);
+    padding: clamp(132px, 14vh, 156px) var(--page-edge) clamp(56px, 6vh, 72px);
   }
 
   .legal-page-header {
-    gap: 20px;
+    gap: 15px;
   }
 
   .legal-page h1 {
-    font-size: clamp(4.8rem, 6vw, 6.8rem);
+    font-size: clamp(3.6rem, 4.5vw, 5rem);
   }
 
   .legal-page-intro {
-    font-size: clamp(1.05rem, 1.12vw, 1.25rem);
+    font-size: clamp(0.95rem, 0.98vw, 1.08rem);
   }
 
   .legal-page-content {
-    margin-top: clamp(56px, 6vh, 76px);
-    gap: clamp(38px, 4vh, 52px);
+    margin-top: clamp(40px, 4.5vh, 56px);
+    gap: clamp(28px, 3vh, 36px);
   }
 
   .legal-page-content h2 {
-    font-size: clamp(2rem, 2.3vw, 2.7rem);
+    font-size: clamp(1.65rem, 1.8vw, 2rem);
   }
 
   .legal-page-content p,
   .legal-page-content li,
   .legal-page-content address {
-    font-size: clamp(1rem, 1.02vw, 1.12rem);
-    line-height: 1.6;
+    font-size: clamp(0.9rem, 0.92vw, 1rem);
+    line-height: 1.55;
   }
 }
 
