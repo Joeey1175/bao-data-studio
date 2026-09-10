@@ -2946,6 +2946,15 @@ p {
   box-shadow: 0 28px 70px rgba(72, 55, 47, 0.14);
 }
 
+.project-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  pointer-events: none;
+}
+
 .project-field {
   display: grid;
   min-width: 0;
@@ -3101,9 +3110,35 @@ p {
   transform: translateY(-2px);
 }
 
+.project-submit:disabled {
+  cursor: wait;
+  opacity: 0.72;
+  box-shadow: none;
+  transform: none;
+}
+
+.project-submit[data-status='success'] {
+  background: color-mix(in srgb, var(--sage) 68%, var(--secondary));
+}
+
 .project-submit:hover svg,
 .project-submit:focus-visible svg {
   transform: translateX(5px);
+}
+
+.project-submit-status {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--primary);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.project-submit-status[data-error='true'] {
+  color: #8f2f2f;
 }
 
 .site-footer {

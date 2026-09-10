@@ -14,6 +14,7 @@ const navItems = [
 
 type NavPageId = (typeof navItems)[number]['page'];
 type PageId = NavPageId | 'service-cleaning' | 'service-analysis' | 'service-dashboard' | 'start-project' | 'privacy-policy' | 'terms-of-use';
+type ProjectSubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
 
 function pageFromHash(hash: string): PageId {
   const page = hash.replace('#', '');
@@ -368,6 +369,7 @@ export default function Home() {
   const [churnSlide, setChurnSlide] = useState(0);
   const [openFaq, setOpenFaq] = useState(-1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [projectSubmitStatus, setProjectSubmitStatus] = useState<ProjectSubmitStatus>('idle');
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -421,22 +423,48 @@ export default function Home() {
     navigateTo('start-project');
   };
 
-  const handleProjectSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleProjectSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
-    const body = [
-      `Name: ${formData.get('name') ?? ''}`,
-      `Email: ${formData.get('email') ?? ''}`,
-      `Company / Organization: ${formData.get('company') || 'Not provided'}`,
-      `Help needed: ${formData.get('service') ?? ''}`,
-      `Timeline: ${formData.get('timeline') || 'Flexible / Not sure yet'}`,
-      '',
-      'Project details:',
-      String(formData.get('project') ?? ''),
-    ].join('\n');
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const payload = {
+      _subject: 'New BAO project inquiry',
+      _template: 'table',
+      _captcha: 'false',
+      _honey: String(formData.get('_honey') ?? ''),
+      name: String(formData.get('name') ?? ''),
+      email: String(formData.get('email') ?? ''),
+      company_organization: String(formData.get('company') || 'Not provided'),
+      help_needed: String(formData.get('service') ?? ''),
+      project_details: String(formData.get('project') ?? ''),
+      timeline: String(formData.get('timeline') || 'Flexible / Not sure yet'),
+      submitted_from: window.location.href,
+    };
 
-    window.location.href = `mailto:baodatastudio@gmail.com?subject=${encodeURIComponent('New BAO project inquiry')}&body=${encodeURIComponent(body)}`;
+    setProjectSubmitStatus('submitting');
+
+    try {
+      const response = await fetch('https://formsubmit.co/ajax/baodatastudio@gmail.com', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      const result = (await response.json().catch(() => null)) as { success?: boolean | string } | null;
+      const submissionFailed = !response.ok || result?.success === false || result?.success === 'false';
+
+      if (submissionFailed) {
+        throw new Error('Project inquiry submission failed');
+      }
+
+      form.reset();
+      setProjectSubmitStatus('success');
+    } catch {
+      setProjectSubmitStatus('error');
+    }
   };
 
   const handleNextServiceClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -1581,7 +1609,23 @@ export default function Home() {
         </header>
 
         <div className="project-form-shell">
-          <form className="project-form" onSubmit={handleProjectSubmit}>
+          <form
+            className="project-form"
+            onSubmit={handleProjectSubmit}
+            onChange={() => {
+              if (projectSubmitStatus !== 'idle' && projectSubmitStatus !== 'submitting') {
+                setProjectSubmitStatus('idle');
+              }
+            }}
+          >
+            <input
+              className="project-honeypot"
+              name="_honey"
+              type="text"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+            />
             <div className="project-field">
               <label htmlFor="project-name">
                 <span>Name</span>
@@ -1661,8 +1705,20 @@ export default function Home() {
             </div>
 
             <div className="project-form-actions">
-              <button className="project-submit" type="submit">
-                <span>Send a Message</span>
+              <button
+                className="project-submit"
+                type="submit"
+                disabled={projectSubmitStatus === 'submitting'}
+                aria-busy={projectSubmitStatus === 'submitting'}
+                data-status={projectSubmitStatus}
+              >
+                <span>
+                  {projectSubmitStatus === 'submitting'
+                    ? 'Sending...'
+                    : projectSubmitStatus === 'success'
+                      ? 'Message Sent'
+                      : 'Send a Message'}
+                </span>
                 <ArrowRight aria-hidden="true" strokeWidth={2.2} />
               </button>
 
@@ -1670,6 +1726,17 @@ export default function Home() {
                 <Mail aria-hidden="true" strokeWidth={2} />
                 <span>baodatastudio@gmail.com</span>
               </a>
+
+              {projectSubmitStatus === 'success' && (
+                <p className="project-submit-status" role="status">
+                  Thanks. Your project request has been sent to BAO.
+                </p>
+              )}
+              {projectSubmitStatus === 'error' && (
+                <p className="project-submit-status" data-error="true" role="alert">
+                  We couldn&rsquo;t send your request. Please try again or email BAO directly.
+                </p>
+              )}
             </div>
           </form>
         </div>
