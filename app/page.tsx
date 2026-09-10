@@ -14,7 +14,7 @@ const navItems = [
 
 type NavPageId = (typeof navItems)[number]['page'];
 type PageId = NavPageId | 'service-cleaning' | 'service-analysis' | 'service-dashboard' | 'start-project' | 'privacy-policy' | 'terms-of-use';
-type ProjectSubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
+type ProjectSubmitStatus = 'idle' | 'submitting' | 'success';
 
 function pageFromHash(hash: string): PageId {
   const page = hash.replace('#', '');
@@ -385,6 +385,12 @@ export default function Home() {
     const syncPageToUrl = () => {
       setActivePage(pageFromHash(window.location.hash));
       window.scrollTo({ top: 0 });
+
+      const searchParams = new URLSearchParams(window.location.search);
+      if (searchParams.get('sent') === '1') {
+        setProjectSubmitStatus('success');
+        window.history.replaceState(null, '', `${window.location.pathname}${window.location.hash}`);
+      }
     };
 
     syncPageToUrl();
@@ -423,48 +429,27 @@ export default function Home() {
     navigateTo('start-project');
   };
 
-  const handleProjectSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleProjectSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const payload = {
-      _subject: 'New BAO project inquiry',
-      _template: 'table',
-      _captcha: 'false',
-      _honey: String(formData.get('_honey') ?? ''),
-      name: String(formData.get('name') ?? ''),
-      email: String(formData.get('email') ?? ''),
-      company_organization: String(formData.get('company') || 'Not provided'),
-      help_needed: String(formData.get('service') ?? ''),
-      project_details: String(formData.get('project') ?? ''),
-      timeline: String(formData.get('timeline') || 'Flexible / Not sure yet'),
-      submitted_from: window.location.href,
-    };
+    const name = String(formData.get('name') ?? '').trim();
+    const autoresponse = form.elements.namedItem('_autoresponse');
+
+    if (autoresponse instanceof HTMLInputElement) {
+      autoresponse.value = `Hi ${name},
+
+Thank you for reaching out to BAO Data Studio!
+We’ve received your project request and are looking forward to learning more about what you’re working on.
+
+We’ll review the details and get back to you as soon as possible with the next steps or any questions we may have.
+
+Best,
+BAO Data Studio
+Better Analysis Option
+baodatastudio@gmail.com`;
+    }
 
     setProjectSubmitStatus('submitting');
-
-    try {
-      const response = await fetch('https://formsubmit.co/ajax/baodatastudio@gmail.com', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      const result = (await response.json().catch(() => null)) as { success?: boolean | string } | null;
-      const submissionFailed = !response.ok || result?.success === false || result?.success === 'false';
-
-      if (submissionFailed) {
-        throw new Error('Project inquiry submission failed');
-      }
-
-      form.reset();
-      setProjectSubmitStatus('success');
-    } catch {
-      setProjectSubmitStatus('error');
-    }
   };
 
   const handleNextServiceClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
@@ -1611,6 +1596,8 @@ export default function Home() {
         <div className="project-form-shell">
           <form
             className="project-form"
+            action="https://formsubmit.co/baodatastudio@gmail.com"
+            method="POST"
             onSubmit={handleProjectSubmit}
             onChange={() => {
               if (projectSubmitStatus !== 'idle' && projectSubmitStatus !== 'submitting') {
@@ -1618,6 +1605,14 @@ export default function Home() {
               }
             }}
           >
+            <input type="hidden" name="_subject" value="We’ve received your request — BAO Data Studio" />
+            <input type="hidden" name="_template" value="table" />
+            <input
+              type="hidden"
+              name="_next"
+              value="https://bao-data-studio.joeey1175.workers.dev/?sent=1#start-project"
+            />
+            <input type="hidden" name="_autoresponse" defaultValue="" />
             <input
               className="project-honeypot"
               name="_honey"
@@ -1730,11 +1725,6 @@ export default function Home() {
               {projectSubmitStatus === 'success' && (
                 <p className="project-submit-status" role="status">
                   Thanks. Your project request has been sent to BAO.
-                </p>
-              )}
-              {projectSubmitStatus === 'error' && (
-                <p className="project-submit-status" data-error="true" role="alert">
-                  We couldn&rsquo;t send your request. Please try again or email BAO directly.
                 </p>
               )}
             </div>
