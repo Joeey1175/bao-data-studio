@@ -9,6 +9,7 @@ const navItems = [
   { label: 'About', page: 'about' },
   { label: 'Services', page: 'services' },
   { label: 'Case Study', page: 'case-study' },
+  { label: 'Pricing', page: 'pricing' },
   { label: 'FAQ', page: 'faq' },
 ] as const;
 
@@ -411,6 +412,10 @@ export default function Home() {
     window.addEventListener('keydown', closeMenuOnEscape);
     return () => window.removeEventListener('keydown', closeMenuOnEscape);
   }, [mobileMenuOpen]);
+
+  useEffect(() => {
+    if (activePage === 'pricing') setOpenFaq(4);
+  }, [activePage]);
 
   const navigateTo = (page: PageId) => {
     setMobileMenuOpen(false);
@@ -1502,7 +1507,7 @@ baodatastudio@gmail.com`;
         id="faq"
         className="faq-section view-first-section"
         aria-labelledby="faq-title"
-        hidden={activePage !== 'faq'}
+        hidden={activePage !== 'faq' && activePage !== 'pricing'}
       >
         <header className="faq-header">
           <h1 id="faq-title">
@@ -1549,7 +1554,7 @@ baodatastudio@gmail.com`;
       <section
         className="cta-section faq-cta-section"
         aria-labelledby="faq-cta-title"
-        hidden={activePage !== 'faq'}
+        hidden={activePage !== 'faq' && activePage !== 'pricing'}
       >
         <div className="cta-inner">
           <div className="cta-kicker">
@@ -2081,6 +2086,7 @@ baodatastudio@gmail.com`;
               <a href="#about" onClick={(event) => handleNavClick(event, 'about')}>About</a>
               <a href="#services" onClick={(event) => handleNavClick(event, 'services')}>Services</a>
               <a href="#case-study" onClick={(event) => handleNavClick(event, 'case-study')}>Case Studies</a>
+              <a href="#pricing" onClick={(event) => handleNavClick(event, 'pricing')}>Pricing</a>
               <a href="#faq" onClick={(event) => handleNavClick(event, 'faq')}>FAQ</a>
               <a href="#start-project" onClick={handleProjectClick}>Contact</a>
             </nav>
