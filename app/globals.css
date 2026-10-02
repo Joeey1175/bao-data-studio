@@ -3994,12 +3994,123 @@ p {
   }
 
   .performance-case {
+    grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.18fr);
     gap: clamp(24px, 3vw, 42px);
   }
 
   .case-gallery {
-    margin-inline: 24px;
-    padding: 18px;
+    width: min(100%, 780px);
+    margin-inline: 0;
+    justify-self: end;
+    gap: 12px;
+    padding: clamp(14px, 1.3vw, 18px);
+    border-radius: clamp(18px, 2vw, 26px);
+  }
+
+  .case-slides {
+    width: min(100%, 740px);
+    aspect-ratio: 16 / 10;
+  }
+
+  .analytics-chart {
+    grid-template-rows: auto minmax(0, 1fr);
+    gap: clamp(6px, 0.7vw, 10px);
+  }
+
+  .chart-heading p {
+    font-size: clamp(0.9rem, 0.95vw, 1.05rem);
+  }
+
+  .chart-heading h4 {
+    font-size: clamp(1.45rem, 1.7vw, 1.95rem);
+  }
+
+  .distribution-frame,
+  .vertical-bar-chart,
+  .vertical-bars {
+    min-height: 0;
+  }
+
+  .distribution-frame {
+    padding: clamp(20px, 2vw, 30px);
+  }
+
+  .donut-chart {
+    width: clamp(150px, 15vw, 220px);
+  }
+
+  .donut-label,
+  .vertical-scale,
+  .vbar span,
+  .ranking-row strong,
+  .ranking-axis span,
+  .chart-legend {
+    font-size: clamp(0.78rem, 0.82vw, 0.92rem);
+  }
+
+  .vertical-bar-chart {
+    padding: clamp(14px, 1.4vw, 20px);
+    border-radius: 18px;
+  }
+
+  .vertical-bars {
+    grid-template-columns: repeat(5, minmax(42px, 1fr));
+    gap: clamp(10px, 1vw, 14px);
+  }
+
+  .multi-line-frame {
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+
+  .chart-legend {
+    gap: 6px 12px;
+  }
+
+  .legend-item::before {
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+  }
+
+  .ranking-frame {
+    gap: clamp(9px, 1vw, 14px);
+  }
+
+  .ranking-row {
+    grid-template-columns: 38px 1fr;
+    gap: 12px;
+  }
+
+  .ranking-row span {
+    height: clamp(22px, 2.4vw, 34px);
+  }
+
+  .ranking-axis {
+    margin-left: 50px;
+  }
+
+  .case-arrow {
+    width: clamp(42px, 3.2vw, 50px);
+    height: clamp(42px, 3.2vw, 50px);
+    font-size: clamp(2.4rem, 2.8vw, 3rem);
+  }
+
+  .case-arrow-prev {
+    left: calc(clamp(42px, 3.2vw, 50px) / -2);
+  }
+
+  .case-arrow-next {
+    right: calc(clamp(42px, 3.2vw, 50px) / -2);
+  }
+
+  .case-gallery-dots {
+    gap: 8px;
+  }
+
+  .case-gallery-dots button {
+    width: 34px;
+    height: 34px;
+    font-size: 1rem;
   }
 
   .cta-section {
