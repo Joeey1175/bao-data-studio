@@ -231,7 +231,7 @@ function PerformanceChart({ chart }: { chart: { kind: string; eyebrow: string; t
 
       {chart.kind === 'trend' && (
         <div className="chart-frame line-chart-frame">
-          <svg className="trend-svg" viewBox="42 42 650 314" role="img" aria-label="Monthly performance trend line chart">
+          <svg className="trend-svg" viewBox="0 42 720 314" role="img" aria-label="Monthly performance trend line chart">
             <g className="chart-grid">
               {[70, 116, 162, 208, 254, 300].map((y) => (
                 <line x1="78" x2="658" y1={y} y2={y} key={y} />

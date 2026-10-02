@@ -2217,8 +2217,15 @@ p {
 }
 
 .trend-svg {
-  transform: scale(1.08);
-  transform-origin: center;
+  overflow: hidden;
+}
+
+.analytics-chart-trend .line-chart-frame {
+  overflow: hidden;
+}
+
+.analytics-chart-trend .chart-axis-labels text {
+  font-size: 18px;
 }
 
 .chart-grid line {
@@ -4567,6 +4574,10 @@ p {
     width: min(100%, 620px);
     aspect-ratio: 1;
     min-height: 0;
+  }
+
+  .analytics-chart-trend .chart-axis-labels text {
+    font-size: 22px;
   }
 
   .case-arrow {
