@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, Binary, Files, Mail, Minus, Plus, Puzzle, RefreshCw, Search } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Binary, Files, Mail, Minus, Plus, Puzzle, RefreshCw, Search, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const navItems = [
@@ -10,11 +10,20 @@ const navItems = [
   { label: 'Services', page: 'services' },
   { label: 'Case Study', page: 'case-study' },
   { label: 'Pricing', page: 'pricing' },
-  { label: 'FAQ', page: 'faq' },
 ] as const;
 
 type NavPageId = (typeof navItems)[number]['page'];
-type PageId = NavPageId | 'service-cleaning' | 'service-analysis' | 'service-dashboard' | 'start-project' | 'privacy-policy' | 'terms-of-use';
+type PageId =
+  | NavPageId
+  | 'service-cleaning'
+  | 'service-analysis'
+  | 'service-dashboard'
+  | 'pricing-retail-sales-analysis'
+  | 'preview-written-analysis'
+  | 'preview-slide-report'
+  | 'start-project'
+  | 'privacy-policy'
+  | 'terms-of-use';
 type ProjectSubmitStatus = 'idle' | 'submitting' | 'success';
 
 function pageFromHash(hash: string): PageId {
@@ -23,11 +32,13 @@ function pageFromHash(hash: string): PageId {
   if (page === 'contact' || page === 'start-project') return 'start-project';
   if (page === 'privacy-policy') return 'privacy-policy';
   if (page === 'terms-of-use') return 'terms-of-use';
-  if (page === 'blogs') return 'faq';
+  if (page === 'blogs' || page === 'faq' || page === 'pricing-faq') return 'pricing';
   if (page === 'behind-bao' || page === 'clarity') return 'about';
   if (page.startsWith('service-preview-')) return 'home';
   if (page === 'service-02' || page === 'service-03' || page === 'service-04') return 'services';
   if (page === 'service-cleaning' || page === 'service-analysis' || page === 'service-dashboard') return page;
+  if (page === 'pricing-retail-sales-analysis') return page;
+  if (page === 'preview-written-analysis' || page === 'preview-slide-report') return page;
 
   return navItems.some((item) => item.page === page) ? (page as NavPageId) : 'home';
 }
@@ -37,6 +48,84 @@ const stickers = [
   { label: 'Practical', className: 'sticker sticker-practical' },
   { label: 'Insightful', className: 'sticker sticker-insightful' },
 ];
+
+const reportPreviews = [
+  {
+    page: 'preview-written-analysis',
+    title: 'Written Analysis Report',
+    description: 'Retail Sales Performance Analysis - Written Business Analysis Report',
+    pages: Array.from(
+      { length: 12 },
+      (_, index) => `/demo-project-written-analysis-pages/page-${String(index + 1).padStart(2, '0')}.jpg`,
+    ),
+  },
+  {
+    page: 'preview-slide-report',
+    title: 'Executive Slide Report',
+    description: 'Retail Sales Performance Analysis - Executive Analysis Report',
+    pages: Array.from({ length: 9 }, (_, index) => `/demo-project-slide-report-pages/page-${index + 1}.jpg`),
+  },
+] as const;
+
+const pricingServices = [
+  {
+    number: '01',
+    title: 'Data Cleaning',
+    tagline: 'Prepare your data for reliable analysis.',
+    description:
+      'For businesses with messy, inconsistent, or unstructured data that needs to be cleaned and organized before analysis.',
+    priceLabel: 'Starting at',
+    price: '$99',
+    buttonLabel: 'Start a Project',
+    includedLabel: 'Included',
+    included: [
+      'Data quality review',
+      'Missing & duplicate handling',
+      'Data formatting & standardization',
+      'Dataset merging',
+      'Analysis-ready Excel / CSV',
+      'Data dictionary',
+    ],
+  },
+  {
+    number: '02',
+    title: 'Data Visualization',
+    tagline: 'Turn your data into clear, decision-ready visuals.',
+    description:
+      'For businesses that need a clearer way to track performance, communicate results, and understand key metrics.',
+    priceLabel: 'Starting at',
+    price: '$249',
+    buttonLabel: 'Start a Project',
+    includedLabel: 'Included',
+    included: [
+      'KPI & metric design',
+      'Charts & visual reporting',
+      'Interactive dashboards',
+      'Tableau / Excel reporting',
+      'Dashboard filters',
+      'Presentation-ready visuals',
+    ],
+  },
+  {
+    number: '03',
+    title: 'Business Analysis',
+    tagline: 'Turn your data into actionable business insights.',
+    description:
+      'For businesses that want to understand performance, identify patterns, and make better-informed decisions.',
+    priceLabel: 'Starting at',
+    price: 'Custom',
+    buttonLabel: 'Request a Quote',
+    includedLabel: 'Tailored to your needs',
+    included: [
+      'Performance & trend analysis',
+      'Customer & product analysis',
+      'Competitor analysis',
+      'KPI interpretation',
+      'Business recommendations',
+      'Written or slide reporting',
+    ],
+  },
+] as const;
 
 const performanceBullets = [
   '45 monthly analytical reports',
@@ -188,7 +277,7 @@ const faqQuestions = [
   },
   {
     question: 'What will I receive at the end of a project?',
-    answer: 'It depends on what you need. Deliverables may include cleaned datasets, analysis reports, KPI summaries, dashboards, visualizations, or actionable findings and recommendations—all agreed on before the project begins.',
+    answer: 'Deliverables depend on the project scope and may include cleaned datasets, Excel or CSV files, dashboards, analytical reports, slide reports, and supporting documentation.',
   },
   {
     question: 'How long does a typical project take?',
@@ -201,6 +290,18 @@ const faqQuestions = [
   {
     question: 'What if I’m not sure what kind of analysis I need?',
     answer: 'No problem—you don’t need to have the technical solution figured out. Tell us what data you have, what you’re trying to understand, and where you’re getting stuck, and we’ll help identify the most practical next step.',
+  },
+  {
+    question: 'How is project pricing determined?',
+    answer: 'Pricing depends on the scope, dataset size and complexity, required analysis, and final deliverables. Starting prices are provided as a reference, and a project estimate will be confirmed after reviewing your request.',
+  },
+  {
+    question: 'Can I request only one service?',
+    answer: 'Yes. Services can be requested individually or combined based on your project needs. For example, you can request data cleaning only, or combine cleaning, visualization, and business analysis.',
+  },
+  {
+    question: 'What do I need to provide to get started?',
+    answer: 'Usually, you’ll need to provide your dataset, a brief description of your business question or goal, and any preferred deliverables. If you’re not sure what you need, you can simply describe the problem you’re trying to solve.',
   },
 ];
 
@@ -385,7 +486,17 @@ export default function Home() {
   useEffect(() => {
     const syncPageToUrl = () => {
       setActivePage(pageFromHash(window.location.hash));
-      window.scrollTo({ top: 0 });
+      const shouldOpenPricingFaq = window.location.hash === '#pricing-faq' || window.location.hash === '#faq';
+
+      if (shouldOpenPricingFaq) {
+        window.requestAnimationFrame(() => {
+          window.requestAnimationFrame(() => {
+            document.getElementById('pricing-faq')?.scrollIntoView({ block: 'start' });
+          });
+        });
+      } else {
+        window.scrollTo({ top: 0 });
+      }
 
       const searchParams = new URLSearchParams(window.location.search);
       if (searchParams.get('sent') === '1') {
@@ -413,10 +524,6 @@ export default function Home() {
     return () => window.removeEventListener('keydown', closeMenuOnEscape);
   }, [mobileMenuOpen]);
 
-  useEffect(() => {
-    if (activePage === 'pricing') setOpenFaq(4);
-  }, [activePage]);
-
   const navigateTo = (page: PageId) => {
     setMobileMenuOpen(false);
     setActivePage(page);
@@ -433,6 +540,27 @@ export default function Home() {
     event.preventDefault();
     navigateTo('start-project');
   };
+
+  const handlePricingFaqClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    setMobileMenuOpen(false);
+    setActivePage('pricing');
+    window.history.pushState(null, '', '#pricing-faq');
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => {
+        document.getElementById('pricing-faq')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+  };
+
+  const isNavItemActive = (page: NavPageId) =>
+    activePage === page ||
+    (page === 'services' &&
+      (activePage === 'service-cleaning' || activePage === 'service-analysis' || activePage === 'service-dashboard')) ||
+    (page === 'pricing' &&
+      (activePage === 'pricing-retail-sales-analysis' ||
+        activePage === 'preview-written-analysis' ||
+        activePage === 'preview-slide-report'));
 
   const handleProjectSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     const form = event.currentTarget;
@@ -499,8 +627,8 @@ baodatastudio@gmail.com`;
           {navItems.map((item) => (
             <a
               href={`#${item.page}`}
-              data-active={activePage === item.page || (item.page === 'services' && (activePage === 'service-cleaning' || activePage === 'service-analysis' || activePage === 'service-dashboard'))}
-              aria-current={activePage === item.page || (item.page === 'services' && (activePage === 'service-cleaning' || activePage === 'service-analysis' || activePage === 'service-dashboard')) ? 'page' : undefined}
+              data-active={isNavItemActive(item.page)}
+              aria-current={isNavItemActive(item.page) ? 'page' : undefined}
               onClick={(event) => handleNavClick(event, item.page)}
               key={item.page}
             >
@@ -517,7 +645,7 @@ baodatastudio@gmail.com`;
             {navItems.map((item) => (
               <a
                 href={`#${item.page}`}
-                aria-current={activePage === item.page ? 'page' : undefined}
+                aria-current={isNavItemActive(item.page) ? 'page' : undefined}
                 onClick={(event) => handleNavClick(event, item.page)}
                 key={item.page}
               >
@@ -1504,69 +1632,472 @@ baodatastudio@gmail.com`;
       </section>
 
       <section
-        id="faq"
-        className="faq-section view-first-section"
-        aria-labelledby="faq-title"
-        hidden={activePage !== 'faq' && activePage !== 'pricing'}
+        id="pricing"
+        className="pricing-demo-section view-first-section"
+        aria-labelledby="pricing-demo-title"
+        hidden={activePage !== 'pricing'}
       >
-        <header className="faq-header">
-          <h1 id="faq-title">
-            You ask,<br />
-            we analyze.
-          </h1>
-        </header>
-
-        <div className="faq-list">
-          {faqQuestions.map((item, index) => {
-            const isOpen = openFaq === index;
-
-            return (
-              <article className="faq-item" data-open={isOpen} key={item.question}>
-                <button
-                  className="faq-question"
-                  type="button"
-                  aria-expanded={isOpen}
-                  aria-controls={`faq-answer-${index}`}
-                  onClick={() => setOpenFaq(isOpen ? -1 : index)}
-                >
-                  <span className="faq-number">{String(index + 1).padStart(2, '0')}</span>
-                  <span className="faq-question-text">{item.question}</span>
-                  <span className="faq-toggle" aria-hidden="true">
-                    {isOpen ? <Minus strokeWidth={2.2} /> : <Plus strokeWidth={2.2} />}
-                  </span>
-                </button>
-
-                <div className="faq-answer-wrap" id={`faq-answer-${index}`}>
-                  <div>
-                    <div className="faq-answer">
-                      <p>{item.answer}</p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
+        <div className="pricing-demo-grid">
+          <h1 id="pricing-demo-title">See Our Work in Action</h1>
+          <div className="pricing-demo-copy">
+            <div className="pricing-demo-kicker">
+              <span aria-hidden="true" />
+              <p>Demo Project</p>
+            </div>
+            <p>
+              See what a BAO Data Studio project can include, from data preparation and analysis to dashboards and
+              decision-ready insights.
+            </p>
+          </div>
         </div>
 
-        <h2 className="faq-closing">You don&rsquo;t need to have the technical solution figured out.</h2>
+        <div className="pricing-demo-projects">
+          <a
+            className="pricing-demo-card pricing-demo-card-link"
+            href="#pricing-retail-sales-analysis"
+            aria-label="View Retail Sales Performance Analysis demo project"
+            onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
+          >
+            <img
+              src="/pricing-retail-sales-analysis.jpg"
+              alt="Team reviewing charts and business performance data"
+            />
+            <div className="pricing-demo-card-caption">
+              <h2>Retail Sales Performance Analysis</h2>
+              <p>
+                <strong>23K+</strong>
+                <span>Orders analyzed across sales, products, markets, and customers.</span>
+              </p>
+            </div>
+          </a>
+
+          <article className="pricing-demo-card">
+            <img
+              src="/pricing-demo-2.jpg"
+              alt="Team reviewing a printed project report together"
+            />
+            <div className="pricing-demo-card-caption pricing-demo-card-caption-simple">
+              <h2>Demo2</h2>
+            </div>
+          </article>
+        </div>
+
+        <div className="pricing-service-plans" aria-label="BAO Data Studio service pricing">
+          {pricingServices.map((service) => (
+            <article className="pricing-service-plan" key={service.number}>
+              <header className="pricing-service-plan-header">
+                <span>{service.number}</span>
+                <h2>{service.title}</h2>
+              </header>
+
+              <p className="pricing-service-plan-tagline">{service.tagline}</p>
+              <p className="pricing-service-plan-description">{service.description}</p>
+
+              <div className="pricing-service-plan-price">
+                <span>{service.priceLabel}</span>
+                <strong>{service.price}</strong>
+              </div>
+
+              <a className="pricing-service-plan-button" href="#start-project" onClick={handleProjectClick}>
+                <span>{service.buttonLabel}</span>
+                <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+              </a>
+
+              <div className="pricing-service-plan-included">
+                <p>{service.includedLabel}</p>
+                <ul>
+                  {service.included.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <section
+          id="pricing-faq"
+          className="faq-section pricing-faq-section"
+          aria-labelledby="pricing-faq-title"
+        >
+          <header className="faq-header">
+            <div className="faq-kicker">
+              <span aria-hidden="true" />
+              <p>FAQ</p>
+            </div>
+            <h2 id="pricing-faq-title">
+              You ask,<br />
+              we analyze.
+            </h2>
+          </header>
+
+          <div className="faq-list">
+            {faqQuestions.map((item, index) => {
+              const isOpen = openFaq === index;
+
+              return (
+                <article className="faq-item" data-open={isOpen} key={item.question}>
+                  <button
+                    className="faq-question"
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={`pricing-faq-answer-${index}`}
+                    onClick={() => setOpenFaq(isOpen ? -1 : index)}
+                  >
+                    <span className="faq-number">{String(index + 1).padStart(2, '0')}</span>
+                    <span className="faq-question-text">{item.question}</span>
+                    <span className="faq-toggle" aria-hidden="true">
+                      {isOpen ? <Minus strokeWidth={2.2} /> : <Plus strokeWidth={2.2} />}
+                    </span>
+                  </button>
+
+                  <div className="faq-answer-wrap" id={`pricing-faq-answer-${index}`}>
+                    <div>
+                      <div className="faq-answer">
+                        <p>{item.answer}</p>
+                      </div>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+
+          <h2 className="faq-closing">You don&rsquo;t need to have the technical solution figured out.</h2>
+        </section>
+
+        <section className="pricing-consult-cta" aria-labelledby="pricing-consult-title">
+          <div className="pricing-consult-note">
+            <p>
+              Share your project details and we&rsquo;ll get back to you with a recommended approach and estimated scope.
+            </p>
+          </div>
+
+          <div className="pricing-consult-action">
+            <div className="pricing-consult-kicker">
+              <span aria-hidden="true" />
+              <p>Get Started</p>
+            </div>
+            <h2 id="pricing-consult-title">Not Sure Which Option Fits?</h2>
+            <p>
+              Every project is different. Tell us what you&rsquo;re working with and what you&rsquo;d like to achieve, and
+              we&rsquo;ll recommend a scope based on your data, goals, and deliverables.
+            </p>
+            <a className="cta-button pricing-consult-button" href="#start-project" onClick={handleProjectClick}>
+              <span>Get Started</span>
+              <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+            </a>
+          </div>
+        </section>
       </section>
 
       <section
-        className="cta-section faq-cta-section"
-        aria-labelledby="faq-cta-title"
-        hidden={activePage !== 'faq' && activePage !== 'pricing'}
+        id="pricing-retail-sales-analysis"
+        className="pricing-project-detail view-first-section"
+        aria-labelledby="pricing-retail-title"
+        hidden={activePage !== 'pricing-retail-sales-analysis'}
+      >
+        <div className="pricing-project-detail-grid">
+          <a
+            className="pricing-project-detail-close"
+            href="#pricing"
+            aria-label="Close demo project"
+            title="Close demo project"
+            onClick={(event) => handleNavClick(event, 'pricing')}
+          >
+            <X aria-hidden="true" strokeWidth={2.3} />
+          </a>
+
+          <div className="pricing-project-detail-copy">
+            <p className="pricing-project-detail-eyebrow">Demo Project</p>
+            <h1 id="pricing-retail-title">Retail Sales Performance Analysis</h1>
+
+            <dl className="pricing-project-metrics">
+              <div>
+                <dt>Net Product Revenue</dt>
+                <dd>£9.77M</dd>
+              </div>
+              <div>
+                <dt>Net Units Sold</dt>
+                <dd>5.29M</dd>
+              </div>
+              <div>
+                <dt>Known Customers</dt>
+                <dd>4.36K</dd>
+              </div>
+            </dl>
+          </div>
+
+          <figure className="pricing-project-detail-cover">
+            <img
+              src="/pricing-retail-sales-analysis.jpg"
+              alt="Team reviewing charts and business performance data"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section
+        className="pricing-project-story"
+        aria-label="Retail Sales Performance Analysis project details"
+        hidden={activePage !== 'pricing-retail-sales-analysis'}
+      >
+        <article className="pricing-project-story-module">
+          <h2>Project Overview</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              This demo project explores retail transaction data from December 2010 to December 2011 to understand
+              sales performance, product contribution, geographic markets, and customer behavior.
+            </p>
+            <p>
+              The project demonstrates an end-to-end analytics workflow—from data preparation and validation to
+              business analysis, interactive visualization, and decision-ready recommendations.
+            </p>
+            <div className="pricing-project-story-group">
+              <h3>Project Scope</h3>
+              <ul>
+                <li>530K+ transaction records analyzed</li>
+                <li>£9.77M net product revenue</li>
+                <li>23K+ orders</li>
+                <li>5.29M net units</li>
+                <li>4,362 identified customers</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module">
+          <h2>The Challenge</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              The goal was to transform transaction-level retail data into clear business insights that could support
+              commercial and operational decision-making.
+            </p>
+            <div className="pricing-project-story-group">
+              <p>The analysis focused on four questions:</p>
+              <ul>
+                <li>How does sales performance change over time?</li>
+                <li>Which products contribute most to revenue and volume?</li>
+                <li>Which geographic markets drive the business?</li>
+                <li>How do repeat purchasing and customer concentration affect revenue?</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module">
+          <h2>Our Approach</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              We built the analysis from the transaction level up, using a structured workflow designed to keep the
+              results consistent across reporting and visualization.
+            </p>
+            <ul>
+              <li>Cleaned and validated transaction-level data</li>
+              <li>Calculated net revenue while retaining returns and cancellations</li>
+              <li>Analyzed monthly revenue and order trends</li>
+              <li>Compared product performance by revenue and unit volume</li>
+              <li>Evaluated geographic revenue distribution</li>
+              <li>Measured repeat purchasing and customer revenue concentration</li>
+              <li>Translated findings into practical business recommendations</li>
+            </ul>
+            <p className="pricing-project-tools">
+              <strong>Tools:</strong> Python · Excel · Tableau
+            </p>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module pricing-project-dashboard-module">
+          <h2>Interactive Dashboard</h2>
+          <div className="pricing-project-story-body">
+            <h3>Retail Sales Performance Dashboard</h3>
+            <p>
+              An interactive Tableau dashboard brings the core performance metrics into one view, allowing users to
+              explore revenue trends, product performance, customer retention, and geographic distribution.
+            </p>
+            <div className="pricing-project-story-group">
+              <p>The dashboard includes:</p>
+              <ul>
+                <li>Net Revenue, Orders, AOV, and Units KPIs</li>
+                <li>Monthly Revenue Trend</li>
+                <li>Top 10 Revenue Products</li>
+                <li>Customer Repeat Rate</li>
+                <li>Revenue by Market</li>
+                <li>Country-level filtering</li>
+              </ul>
+            </div>
+            <a
+              className="pricing-project-dashboard-link"
+              href="https://public.tableau.com/views/BAORetailSalesPerformanceDashboardDemoproject1/Dashboard1"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span>View Dashboard</span>
+              <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+            </a>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module pricing-project-insights-module">
+          <h2>Key Insights</h2>
+          <div className="pricing-project-insights-grid">
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">104%</p>
+              <h3>Revenue Growth</h3>
+              <p>Monthly net revenue increased by approximately 104% from August to November 2011.</p>
+            </section>
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">84.75%</p>
+              <h3>UK Revenue Share</h3>
+              <p>The United Kingdom generated 84.75% of total net product revenue.</p>
+            </section>
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">69.6%</p>
+              <h3>Repeat Customer Rate</h3>
+              <p>Nearly seven in ten identified customers placed more than one order.</p>
+            </section>
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">60.3%</p>
+              <h3>High-Value Customer Share</h3>
+              <p>The top 10% of identified customers generated approximately 60.3% of customer-attributed revenue.</p>
+            </section>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module pricing-project-recommendations-module">
+          <h2>Business Recommendations</h2>
+          <div className="pricing-project-story-body">
+            <p>The analysis identified four areas where the business could focus its next steps.</p>
+            <div className="pricing-project-recommendations">
+              <section>
+                <h3>Prepare for seasonal demand</h3>
+                <p>Plan inventory and fulfillment capacity ahead of the September–November sales increase.</p>
+              </section>
+              <section>
+                <h3>Manage a diversified product portfolio</h3>
+                <p>Evaluate products using both revenue and unit volume rather than relying only on top-selling SKUs.</p>
+              </section>
+              <section>
+                <h3>Develop established international markets</h3>
+                <p>
+                  Explore growth opportunities in markets such as the Netherlands, EIRE, Germany, France, and
+                  Australia while maintaining the core UK business.
+                </p>
+              </section>
+              <section>
+                <h3>Retain high-value repeat customers</h3>
+                <p>
+                  Combine broad retention efforts with targeted engagement for customer segments that contribute
+                  disproportionately to revenue.
+                </p>
+              </section>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-deliverables">
+          <header className="pricing-project-deliverables-header">
+            <h2>Sample Deliverables</h2>
+            <p>
+              A BAO Data Studio project can combine analysis, visualization, and reporting into a set of practical
+              deliverables tailored to the business question.
+            </p>
+          </header>
+
+          <div className="pricing-project-deliverables-grid">
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-document">
+              <div className="pricing-project-deliverable-copy">
+                <h3>Written Analysis Report</h3>
+                <p>A detailed explanation of the analysis, findings, and strategic recommendations.</p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="#preview-written-analysis"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Online Preview</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-document">
+              <div className="pricing-project-deliverable-copy">
+                <h3>Executive Slide Report</h3>
+                <p>A visual summary of key findings, business implications, and recommendations.</p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="#preview-slide-report"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Online Preview</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-media">
+              <figure>
+                <img
+                  src="/demo-project-tableau-dashboard.png"
+                  alt="Retail Sales Performance Tableau dashboard"
+                />
+              </figure>
+              <div className="pricing-project-deliverable-copy">
+                <h3>Interactive Dashboard</h3>
+                <p>A Tableau dashboard for exploring KPIs, trends, products, customers, and markets.</p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="https://public.tableau.com/views/BAORetailSalesPerformanceDashboardDemoproject1/Dashboard1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>View Dashboard</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-media">
+              <figure>
+                <img
+                  src="/demo-project-cleaned-dataset.png"
+                  alt="Cleaned retail sales dataset in Excel"
+                />
+              </figure>
+              <div className="pricing-project-deliverable-copy">
+                <h3>Cleaned Dataset</h3>
+                <p>A structured, analysis-ready Excel dataset with supporting data documentation.</p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="/demo-project-cleaned-dataset.png"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>View Dataset</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="pricing-project-contact"
+        className="cta-section pricing-project-cta"
+        aria-labelledby="pricing-project-cta-title"
+        hidden={activePage !== 'pricing-retail-sales-analysis'}
       >
         <div className="cta-inner">
           <div className="cta-kicker">
             <span aria-hidden="true" />
-            <p>Ready When You Are</p>
+            <p>Get Started</p>
           </div>
           <div className="cta-copy">
-            <h2 id="faq-cta-title">Have data. Let&rsquo;s make sense of it.</h2>
-            <p>
-              Tell us what you&rsquo;re working with, what you&rsquo;re trying to understand, and where you need a
-              little clarity.
-            </p>
+            <h2 id="pricing-project-cta-title">Have data. Need clarity?</h2>
+            <p>Let's turn your data into insights you can actually use.</p>
             <a className="cta-button" href="#start-project" onClick={handleProjectClick}>
               <span>Start a Project</span>
               <span aria-hidden="true">→</span>
@@ -1574,6 +2105,49 @@ baodatastudio@gmail.com`;
           </div>
         </div>
       </section>
+
+      {reportPreviews.map((report) => (
+        <section
+          key={report.page}
+          id={report.page}
+          className="report-preview-page view-first-section"
+          aria-labelledby={`${report.page}-title`}
+          hidden={activePage !== report.page}
+        >
+          <header className="report-preview-header">
+            <a
+              className="report-preview-close"
+              href="#pricing-retail-sales-analysis"
+              aria-label="Close preview"
+              title="Close preview"
+              onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
+            >
+              <X aria-hidden="true" strokeWidth={2.3} />
+            </a>
+            <div>
+              <p>Demo Project</p>
+              <h1 id={`${report.page}-title`}>{report.title}</h1>
+              <span>{report.description}</span>
+            </div>
+            <a
+              href="#pricing-retail-sales-analysis"
+              onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
+            >
+              <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
+              <span>Back to Project</span>
+            </a>
+          </header>
+
+          <div className="report-preview-pages">
+            {report.pages.map((src, index) => (
+              <figure key={src}>
+                <img src={src} alt={`${report.title}, page ${index + 1}`} loading={index === 0 ? 'eager' : 'lazy'} />
+                <figcaption>Page {index + 1}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      ))}
 
       <section
         id="start-project"
@@ -2087,7 +2661,7 @@ baodatastudio@gmail.com`;
               <a href="#services" onClick={(event) => handleNavClick(event, 'services')}>Services</a>
               <a href="#case-study" onClick={(event) => handleNavClick(event, 'case-study')}>Case Studies</a>
               <a href="#pricing" onClick={(event) => handleNavClick(event, 'pricing')}>Pricing</a>
-              <a href="#faq" onClick={(event) => handleNavClick(event, 'faq')}>FAQ</a>
+              <a href="#pricing-faq" onClick={handlePricingFaqClick}>FAQ</a>
               <a href="#start-project" onClick={handleProjectClick}>Contact</a>
             </nav>
 
