@@ -2722,7 +2722,7 @@ baodatastudio@gmail.com`;
 
         <div className="notebook-preview-shell">
           <iframe
-            src="/demo2-analysis-notebook.html"
+            src="/demo2-analysis-notebook"
             title="Skincare Competitive Analysis Python notebook"
             loading="eager"
           />
