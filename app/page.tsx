@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, ArrowRight, Binary, Files, Mail, Minus, Plus, Puzzle, RefreshCw, Search, X } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -19,6 +19,11 @@ type PageId =
   | 'service-analysis'
   | 'service-dashboard'
   | 'pricing-retail-sales-analysis'
+  | 'pricing-skincare-competitive-analysis'
+  | 'preview-skincare-competitive-positioning'
+  | 'preview-skincare-slide-report'
+  | 'preview-skincare-analysis-notebook'
+  | 'preview-skincare-dataset'
   | 'preview-written-analysis'
   | 'preview-slide-report'
   | 'start-project'
@@ -38,6 +43,15 @@ function pageFromHash(hash: string): PageId {
   if (page === 'service-02' || page === 'service-03' || page === 'service-04') return 'services';
   if (page === 'service-cleaning' || page === 'service-analysis' || page === 'service-dashboard') return page;
   if (page === 'pricing-retail-sales-analysis') return page;
+  if (page === 'pricing-skincare-competitive-analysis') return page;
+  if (page === 'preview-skincare-competitive-positioning') return page;
+  if (
+    page === 'preview-skincare-slide-report' ||
+    page === 'preview-skincare-analysis-notebook' ||
+    page === 'preview-skincare-dataset'
+  ) {
+    return page;
+  }
   if (page === 'preview-written-analysis' || page === 'preview-slide-report') return page;
 
   return navItems.some((item) => item.page === page) ? (page as NavPageId) : 'home';
@@ -54,6 +68,7 @@ const reportPreviews = [
     page: 'preview-written-analysis',
     title: 'Written Analysis Report',
     description: 'Retail Sales Performance Analysis - Written Business Analysis Report',
+    backPage: 'pricing-retail-sales-analysis',
     pages: Array.from(
       { length: 12 },
       (_, index) => `/demo-project-written-analysis-pages/page-${String(index + 1).padStart(2, '0')}.jpg`,
@@ -63,7 +78,15 @@ const reportPreviews = [
     page: 'preview-slide-report',
     title: 'Executive Slide Report',
     description: 'Retail Sales Performance Analysis - Executive Analysis Report',
+    backPage: 'pricing-retail-sales-analysis',
     pages: Array.from({ length: 9 }, (_, index) => `/demo-project-slide-report-pages/page-${index + 1}.jpg`),
+  },
+  {
+    page: 'preview-skincare-slide-report',
+    title: 'Executive Slide Report',
+    description: 'Skincare Competitive Analysis - Executive Slide Report',
+    backPage: 'pricing-skincare-competitive-analysis',
+    pages: Array.from({ length: 9 }, (_, index) => `/demo2-slide-report-pages/page-${index + 1}.jpg`),
   },
 ] as const;
 
@@ -472,6 +495,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(-1);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [projectSubmitStatus, setProjectSubmitStatus] = useState<ProjectSubmitStatus>('idle');
+  const datasetPreviewRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -553,12 +577,25 @@ export default function Home() {
     });
   };
 
+  const scrollDatasetPreview = (direction: -1 | 1) => {
+    const viewport = datasetPreviewRef.current;
+
+    if (!viewport) return;
+
+    viewport.scrollBy({ left: viewport.clientWidth * direction, behavior: 'smooth' });
+  };
+
   const isNavItemActive = (page: NavPageId) =>
     activePage === page ||
     (page === 'services' &&
       (activePage === 'service-cleaning' || activePage === 'service-analysis' || activePage === 'service-dashboard')) ||
     (page === 'pricing' &&
       (activePage === 'pricing-retail-sales-analysis' ||
+        activePage === 'pricing-skincare-competitive-analysis' ||
+        activePage === 'preview-skincare-competitive-positioning' ||
+        activePage === 'preview-skincare-slide-report' ||
+        activePage === 'preview-skincare-analysis-notebook' ||
+        activePage === 'preview-skincare-dataset' ||
         activePage === 'preview-written-analysis' ||
         activePage === 'preview-slide-report'));
 
@@ -1660,7 +1697,7 @@ baodatastudio@gmail.com`;
           >
             <img
               src="/pricing-retail-sales-analysis.jpg"
-              alt="Team reviewing charts and business performance data"
+              alt="Illuminated shopping cart sign above a retail entrance"
             />
             <div className="pricing-demo-card-caption">
               <h2>Retail Sales Performance Analysis</h2>
@@ -1671,15 +1708,24 @@ baodatastudio@gmail.com`;
             </div>
           </a>
 
-          <article className="pricing-demo-card">
+          <a
+            className="pricing-demo-card pricing-demo-card-link"
+            href="#pricing-skincare-competitive-analysis"
+            aria-label="View Skincare Competitive Analysis demo project"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
             <img
               src="/pricing-demo-2.jpg"
-              alt="Team reviewing a printed project report together"
+              alt="Pastel cosmetic products arranged on a display table"
             />
-            <div className="pricing-demo-card-caption pricing-demo-card-caption-simple">
-              <h2>Demo2</h2>
+            <div className="pricing-demo-card-caption">
+              <h2>Skincare Competitive Analysis</h2>
+              <p>
+                <strong>304</strong>
+                <span>Products analyzed across six skincare brands to evaluate pricing, portfolios, and customer response.</span>
+              </p>
             </div>
-          </article>
+          </a>
         </div>
 
         <div className="pricing-service-plans" aria-label="BAO Data Studio service pricing">
@@ -1831,9 +1877,406 @@ baodatastudio@gmail.com`;
           <figure className="pricing-project-detail-cover">
             <img
               src="/pricing-retail-sales-analysis.jpg"
-              alt="Team reviewing charts and business performance data"
+              alt="Illuminated shopping cart sign above a retail entrance"
             />
           </figure>
+        </div>
+      </section>
+
+      <section
+        id="pricing-skincare-competitive-analysis"
+        className="pricing-project-detail view-first-section"
+        aria-labelledby="pricing-skincare-title"
+        hidden={activePage !== 'pricing-skincare-competitive-analysis'}
+      >
+        <div className="pricing-project-detail-grid">
+          <a
+            className="pricing-project-detail-close"
+            href="#pricing"
+            aria-label="Close demo project"
+            title="Close demo project"
+            onClick={(event) => handleNavClick(event, 'pricing')}
+          >
+            <X aria-hidden="true" strokeWidth={2.3} />
+          </a>
+
+          <div className="pricing-project-detail-copy">
+            <p className="pricing-project-detail-eyebrow">Demo Project</p>
+            <h1 id="pricing-skincare-title">Skincare Competitive Analysis</h1>
+
+            <dl className="pricing-project-metrics">
+              <div>
+                <dt>Products Analyzed</dt>
+                <dd>304</dd>
+              </div>
+              <div>
+                <dt>Competitors Compared</dt>
+                <dd>6</dd>
+              </div>
+              <div>
+                <dt>Core Categories</dt>
+                <dd>5</dd>
+              </div>
+            </dl>
+          </div>
+
+          <figure className="pricing-project-detail-cover pricing-project-detail-cover--skincare">
+            <img
+              src="/pricing-demo-2.jpg"
+              alt="Pastel cosmetic products arranged on a display table"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section
+        className="pricing-project-story"
+        aria-label="Skincare Competitive Analysis project details"
+        hidden={activePage !== 'pricing-skincare-competitive-analysis'}
+      >
+        <article className="pricing-project-story-module">
+          <h2>Project Overview</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              This demo project analyzes six selected skincare brands using Sephora product data to understand
+              competitive positioning across pricing, product portfolios, and customer response.
+            </p>
+            <p>
+              By comparing product pricing, category coverage, and customer engagement metrics, the analysis identifies
+              competitive patterns and explores potential opportunities for market differentiation.
+            </p>
+            <p>
+              The project demonstrates how competitor data can be transformed into actionable insights that support
+              product positioning, portfolio planning, and business strategy.
+            </p>
+            <div className="pricing-project-story-group">
+              <h3>Project Scope</h3>
+              <ul>
+                <li>304 products analyzed</li>
+                <li>6 competitors compared</li>
+                <li>3 core analysis dimensions</li>
+                <li>5 product categories examined</li>
+              </ul>
+              <p className="pricing-project-tools">
+                <strong>Tools:</strong> Python · Pandas · Matplotlib · Excel
+              </p>
+              <p>
+                <strong>Dataset Source:</strong> Sephora Products and Skincare Reviews — Kaggle
+              </p>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module">
+          <h2>The Challenge</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              The skincare market offers a wide range of products across different price points, categories, and brand
+              positioning strategies.
+            </p>
+            <p>
+              For businesses considering entering or expanding within this market, understanding how competitors
+              position their products is an important first step.
+            </p>
+            <div className="pricing-project-story-group">
+              <p>This project focuses on four business questions:</p>
+              <ul>
+                <li>
+                  <strong>Pricing Positioning:</strong> How do selected skincare brands differ in pricing strategy?
+                </li>
+                <li>
+                  <strong>Product Portfolio:</strong> Which competitors focus on specific product categories, and which
+                  offer more diversified portfolios?
+                </li>
+                <li>
+                  <strong>Customer Response:</strong> How do customer ratings, reviews, and Sephora Loves vary across
+                  competitors?
+                </li>
+                <li>
+                  <strong>Market Opportunity:</strong> Where might potential opportunities for differentiation exist?
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module">
+          <h2>Our Approach</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              We evaluated competitor performance through a structured analytical workflow, combining product-level
+              data preparation, comparative analysis, and strategic interpretation.
+            </p>
+            <ul>
+              <li>
+                <strong>Data Preparation:</strong> Selected six skincare competitors, validated product-level
+                information, and prepared a consistent dataset for analysis.
+              </li>
+              <li>
+                <strong>Pricing Analysis:</strong> Compared median prices and product price distributions to identify
+                distinct competitive pricing positions.
+              </li>
+              <li>
+                <strong>Portfolio Analysis:</strong> Examined category coverage, product mix, and portfolio concentration
+                to understand differences in product strategies.
+              </li>
+              <li>
+                <strong>Customer Response Analysis:</strong> Evaluated product ratings, review counts, and Sephora Loves
+                to compare customer response signals.
+              </li>
+              <li>
+                <strong>Competitive Positioning:</strong> Combined pricing, portfolio concentration, and engagement
+                metrics to visualize how competitors differ.
+              </li>
+              <li>
+                <strong>Strategic Recommendations:</strong> Translated analytical findings into potential opportunities
+                for pricing, product development, and competitive differentiation.
+              </li>
+            </ul>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module pricing-project-insights-module">
+          <h2>Key Insights</h2>
+          <div className="pricing-project-insights-grid">
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">2.7×</p>
+              <h3>Pricing Gap</h3>
+              <p>
+                The lowest median price among higher-priced competitors was approximately 2.7 times the highest median
+                price in the accessible group.
+              </p>
+            </section>
+
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">73.3%</p>
+              <h3>Portfolio Concentration</h3>
+              <p>
+                The Ordinary allocated 73.3% of its analyzed product portfolio to Treatments, demonstrating a highly
+                focused category strategy.
+              </p>
+            </section>
+
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">147K</p>
+              <h3>Customer Engagement</h3>
+              <p>
+                The Ordinary recorded the highest average Sephora Loves per product among the six selected brands.
+              </p>
+            </section>
+
+            <section className="pricing-project-insight-card">
+              <p className="pricing-project-insight-value">4.40 / 5</p>
+              <h3>Highest Average Rating</h3>
+              <p>Paula&rsquo;s Choice achieved the highest average product rating among the analyzed competitors.</p>
+            </section>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module skincare-positioning-feature">
+          <h2>Competitive Positioning</h2>
+          <div className="skincare-positioning-feature-card">
+            <figure>
+              <img
+                src="/skincare-competitive-positioning.png"
+                alt="Bubble chart comparing the competitive positioning of six skincare brands"
+              />
+            </figure>
+            <div className="skincare-positioning-feature-copy">
+              <p>
+                Explore how pricing, portfolio concentration, and customer engagement shape the position of six
+                selected skincare brands.
+              </p>
+              <a
+                className="pricing-project-deliverable-link"
+                href="#preview-skincare-competitive-positioning"
+                onClick={(event) => handleNavClick(event, 'preview-skincare-competitive-positioning')}
+              >
+                <span>Online Preview</span>
+                <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module skincare-positioning-insights-module skincare-recommendations-module">
+          <h2>Business Recommendations</h2>
+          <p className="skincare-recommendations-intro">
+            Based on the competitive analysis, three strategic directions emerge for businesses evaluating
+            opportunities within the skincare market.
+          </p>
+
+          <div className="skincare-positioning-insights-grid">
+            <section className="skincare-positioning-insight-card">
+              <span>01</span>
+              <h3>Target the Accessible Mid-Market</h3>
+              <p>Explore positioning between ultra-accessible skincare brands and higher-priced competitors.</p>
+              <p>
+                A carefully defined mid-market strategy may offer opportunities to reach price-conscious consumers
+                while supporting differentiated product value.
+              </p>
+            </section>
+
+            <section className="skincare-positioning-insight-card">
+              <span>02</span>
+              <h3>Build a Balanced Product Portfolio</h3>
+              <p>
+                Develop broader category coverage across essential skincare needs rather than relying heavily on a
+                single product category.
+              </p>
+              <p>
+                A balanced portfolio may help brands address different customer needs and reduce dependence on
+                individual product segments.
+              </p>
+            </section>
+
+            <section className="skincare-positioning-insight-card">
+              <span>03</span>
+              <h3>Compete Beyond Price</h3>
+              <p>Pair competitive pricing with a strong product value proposition and customer engagement strategy.</p>
+              <p>
+                Customer ratings, review activity, and Sephora Loves provide complementary signals that can help
+                businesses evaluate product appeal and competitive positioning.
+              </p>
+            </section>
+          </div>
+
+          <section className="skincare-recommendations-takeaway">
+            <p>Recommended Positioning</p>
+            <h3>Accessible Pricing + Diversified Portfolio + Strong Customer Engagement</h3>
+          </section>
+        </article>
+
+        <article className="pricing-project-deliverables skincare-project-deliverables">
+          <header className="pricing-project-deliverables-header">
+            <h2>Sample Deliverables</h2>
+            <p>
+              This project demonstrates how competitor data can be transformed into structured analysis, clear visual
+              reporting, and strategic recommendations.
+            </p>
+          </header>
+
+          <div className="pricing-project-deliverables-grid">
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-document">
+              <div className="pricing-project-deliverable-copy">
+                <h3>Executive Slide Report</h3>
+                <p>
+                  A nine-page visual report summarizing competitive pricing, portfolio strategies, customer response,
+                  market positioning, and strategic recommendations.
+                </p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="#preview-skincare-slide-report"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Online Preview</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-document">
+              <div className="pricing-project-deliverable-copy">
+                <h3>Competitive Analysis Notebook</h3>
+                <p>
+                  A Python analysis notebook documenting data validation, competitive benchmarking, visualization, and
+                  strategic findings.
+                </p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="#preview-skincare-analysis-notebook"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Online Preview</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+
+            <section className="pricing-project-deliverable-card pricing-project-deliverable-card-media skincare-deliverable-dataset-card">
+              <figure>
+                <img
+                  src="/demo2-dataset-preview-1.png"
+                  alt="Cleaned skincare product dataset in Excel"
+                />
+              </figure>
+              <div className="pricing-project-deliverable-copy">
+                <h3>Cleaned Dataset</h3>
+                <p>
+                  A validated, analysis-ready Excel dataset containing 304 products across six selected brands,
+                  accompanied by a data dictionary.
+                </p>
+                <a
+                  className="pricing-project-deliverable-link"
+                  href="#preview-skincare-dataset"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <span>Online Preview</span>
+                  <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+                </a>
+              </div>
+            </section>
+          </div>
+        </article>
+
+        <article className="pricing-project-story-module skincare-project-outcome">
+          <h2>Project Outcome</h2>
+          <div className="pricing-project-story-body">
+            <p>
+              The analysis identified clear differences in pricing, product portfolio structure, and customer response
+              among six selected skincare brands.
+            </p>
+            <p>
+              Accessible competitors demonstrated more concentrated category strategies, while higher-priced brands
+              generally maintained broader product portfolios.
+            </p>
+            <p>
+              By integrating these findings, the project identified a potential differentiation opportunity centered
+              on accessible pricing, diversified product coverage, and strong customer engagement.
+            </p>
+            <p>
+              The results provide a data-informed foundation for further market research, product planning, and
+              competitive strategy development.
+            </p>
+
+            <section className="skincare-project-outcome-highlight">
+              <p>From Competitive Data to Strategic Direction</p>
+              <h3>
+                Transforming product-level competitor information into insights that support business planning and
+                market positioning.
+              </h3>
+            </section>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="skincare-project-contact"
+        className="cta-section pricing-project-cta skincare-project-cta"
+        aria-labelledby="skincare-project-cta-title"
+        hidden={activePage !== 'pricing-skincare-competitive-analysis'}
+      >
+        <div className="cta-inner">
+          <div className="cta-kicker">
+            <span aria-hidden="true" />
+            <p>Interested in a Similar Project?</p>
+          </div>
+          <div className="cta-copy">
+            <h2 id="skincare-project-cta-title">Understand Your Competitors. Find Your Opportunity.</h2>
+            <p>
+              Whether you&rsquo;re evaluating competitors, planning a new product, or exploring market opportunities,
+              BAO Data Studio can help turn your data into clear insights and actionable recommendations.
+            </p>
+            <p>Tell us about your business, your competitors, and the questions you&rsquo;re trying to answer.</p>
+            <p>We&rsquo;ll help define an analytical approach tailored to your goals.</p>
+            <a className="cta-button" href="#start-project" onClick={handleProjectClick}>
+              <span>Get Started</span>
+              <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+            </a>
+          </div>
         </div>
       </section>
 
@@ -2106,6 +2549,104 @@ baodatastudio@gmail.com`;
         </div>
       </section>
 
+      <section
+        id="preview-skincare-competitive-positioning"
+        className="report-preview-page skincare-positioning-preview-page view-first-section"
+        aria-labelledby="preview-skincare-positioning-title"
+        hidden={activePage !== 'preview-skincare-competitive-positioning'}
+      >
+        <header className="report-preview-header">
+          <a
+            className="report-preview-close"
+            href="#pricing-skincare-competitive-analysis"
+            aria-label="Close preview"
+            title="Close preview"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <X aria-hidden="true" strokeWidth={2.3} />
+          </a>
+          <div>
+            <p>Demo Project</p>
+            <h1 id="preview-skincare-positioning-title">Competitive Positioning</h1>
+            <span>Skincare Competitive Analysis</span>
+          </div>
+          <a
+            href="#pricing-skincare-competitive-analysis"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
+            <span>Back to Project</span>
+          </a>
+        </header>
+
+        <div className="skincare-positioning-preview-content">
+          <article className="pricing-project-story-module">
+            <h2>Competitive Positioning</h2>
+            <div className="pricing-project-story-body">
+              <p>
+                By combining median product price, portfolio concentration, and average Sephora Loves per product, this
+                analysis highlights distinct positioning strategies among the six selected skincare brands.
+              </p>
+              <p>
+                The visualization reveals two broad competitive groups: accessible brands with more concentrated
+                portfolios and higher-priced competitors offering more diversified product ranges.
+              </p>
+              <div className="pricing-project-story-group">
+                <h3>Competitive Positioning of Selected Skincare Brands</h3>
+                <figure className="skincare-positioning-chart">
+                  <img
+                    src="/skincare-competitive-positioning.png"
+                    alt="Bubble chart comparing median product price, largest category share, and average Sephora Loves per product"
+                  />
+                </figure>
+                <div className="skincare-positioning-chart-key">
+                  <p><strong>X-Axis:</strong> Median Product Price (USD)</p>
+                  <p><strong>Y-Axis:</strong> Largest Category Share (%)</p>
+                  <p><strong>Bubble Size:</strong> Average Sephora Loves per Product</p>
+                </div>
+              </div>
+            </div>
+          </article>
+
+          <article className="pricing-project-story-module skincare-positioning-insights-module">
+            <h2>Insights</h2>
+            <div className="skincare-positioning-insights-grid">
+              <section className="skincare-positioning-insight-card">
+                <span>01</span>
+                <h3>Accessible &amp; Focused</h3>
+                <p>
+                  The Ordinary and The INKEY List occupy accessible price positions, with median product prices of
+                  $10.00 and $12.99, respectively.
+                </p>
+                <p>Both brands demonstrate relatively concentrated product portfolios, particularly within Treatments.</p>
+              </section>
+
+              <section className="skincare-positioning-insight-card">
+                <span>02</span>
+                <h3>Higher-Priced &amp; Diversified</h3>
+                <p>
+                  The remaining four competitors have median product prices between $34.75 and $46.00, with broader
+                  category coverage and lower concentration in their largest product categories.
+                </p>
+              </section>
+
+              <section className="skincare-positioning-insight-card">
+                <span>03</span>
+                <h3>Potential Market Whitespace</h3>
+                <p>
+                  The findings suggest a potential opportunity for brands that can combine accessible pricing with a
+                  more diversified skincare portfolio.
+                </p>
+                <p>
+                  This opportunity would require further validation through consumer demand, profitability, and market
+                  research.
+                </p>
+              </section>
+            </div>
+          </article>
+        </div>
+      </section>
+
       {reportPreviews.map((report) => (
         <section
           key={report.page}
@@ -2117,10 +2658,10 @@ baodatastudio@gmail.com`;
           <header className="report-preview-header">
             <a
               className="report-preview-close"
-              href="#pricing-retail-sales-analysis"
+              href={`#${report.backPage}`}
               aria-label="Close preview"
               title="Close preview"
-              onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
+              onClick={(event) => handleNavClick(event, report.backPage)}
             >
               <X aria-hidden="true" strokeWidth={2.3} />
             </a>
@@ -2130,8 +2671,8 @@ baodatastudio@gmail.com`;
               <span>{report.description}</span>
             </div>
             <a
-              href="#pricing-retail-sales-analysis"
-              onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
+              href={`#${report.backPage}`}
+              onClick={(event) => handleNavClick(event, report.backPage)}
             >
               <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
               <span>Back to Project</span>
@@ -2148,6 +2689,115 @@ baodatastudio@gmail.com`;
           </div>
         </section>
       ))}
+
+      <section
+        id="preview-skincare-analysis-notebook"
+        className="report-preview-page view-first-section"
+        aria-labelledby="preview-skincare-analysis-notebook-title"
+        hidden={activePage !== 'preview-skincare-analysis-notebook'}
+      >
+        <header className="report-preview-header">
+          <a
+            className="report-preview-close"
+            href="#pricing-skincare-competitive-analysis"
+            aria-label="Close preview"
+            title="Close preview"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <X aria-hidden="true" strokeWidth={2.3} />
+          </a>
+          <div>
+            <p>Demo Project</p>
+            <h1 id="preview-skincare-analysis-notebook-title">Competitive Analysis Notebook</h1>
+            <span>Skincare Competitive Analysis - Python Notebook</span>
+          </div>
+          <a
+            href="#pricing-skincare-competitive-analysis"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
+            <span>Back to Project</span>
+          </a>
+        </header>
+
+        <div className="notebook-preview-shell">
+          <iframe
+            src="/demo2-analysis-notebook.html"
+            title="Skincare Competitive Analysis Python notebook"
+            loading="eager"
+          />
+        </div>
+      </section>
+
+      <section
+        id="preview-skincare-dataset"
+        className="report-preview-page view-first-section"
+        aria-labelledby="preview-skincare-dataset-title"
+        hidden={activePage !== 'preview-skincare-dataset'}
+      >
+        <header className="report-preview-header">
+          <a
+            className="report-preview-close"
+            href="#pricing-skincare-competitive-analysis"
+            aria-label="Close preview"
+            title="Close preview"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <X aria-hidden="true" strokeWidth={2.3} />
+          </a>
+          <div>
+            <p>Demo Project</p>
+            <h1 id="preview-skincare-dataset-title">Cleaned Dataset</h1>
+            <span>Skincare Competitive Analysis - Excel Dataset Preview</span>
+          </div>
+          <a
+            href="#pricing-skincare-competitive-analysis"
+            onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
+          >
+            <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
+            <span>Back to Project</span>
+          </a>
+        </header>
+
+        <div className="dataset-preview-carousel">
+          <div className="dataset-preview-controls">
+            <button
+              type="button"
+              aria-label="Show previous dataset columns"
+              title="Previous dataset view"
+              onClick={() => scrollDatasetPreview(-1)}
+            >
+              <ArrowLeft aria-hidden="true" strokeWidth={2.3} />
+            </button>
+            <button
+              type="button"
+              aria-label="Show next dataset columns"
+              title="Next dataset view"
+              onClick={() => scrollDatasetPreview(1)}
+            >
+              <ArrowRight aria-hidden="true" strokeWidth={2.3} />
+            </button>
+          </div>
+          <div
+            ref={datasetPreviewRef}
+            className="dataset-preview-viewport"
+            aria-label="Excel dataset preview"
+            tabIndex={0}
+          >
+            <div className="dataset-preview-track">
+              {[1, 2, 3].map((index) => (
+                <figure key={index}>
+                  <img
+                    src={`/demo2-dataset-preview-${index}.png`}
+                    alt={`Cleaned skincare dataset columns, view ${index} of 3`}
+                    loading={index === 1 ? 'eager' : 'lazy'}
+                  />
+                </figure>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
       <section
         id="start-project"
