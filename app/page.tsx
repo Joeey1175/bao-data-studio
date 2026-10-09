@@ -1696,7 +1696,7 @@ baodatastudio@gmail.com`;
             onClick={(event) => handleNavClick(event, 'pricing-retail-sales-analysis')}
           >
             <img
-              src="/pricing-retail-sales-analysis.jpg"
+              src="/pricing-retail-sales-analysis-2026.jpg"
               alt="Illuminated shopping cart sign above a retail entrance"
             />
             <div className="pricing-demo-card-caption">
@@ -1715,7 +1715,7 @@ baodatastudio@gmail.com`;
             onClick={(event) => handleNavClick(event, 'pricing-skincare-competitive-analysis')}
           >
             <img
-              src="/pricing-demo-2.jpg"
+              src="/pricing-skincare-competitive-analysis-2026.jpg"
               alt="Pastel cosmetic products arranged on a display table"
             />
             <div className="pricing-demo-card-caption">
@@ -1876,7 +1876,7 @@ baodatastudio@gmail.com`;
 
           <figure className="pricing-project-detail-cover">
             <img
-              src="/pricing-retail-sales-analysis.jpg"
+              src="/pricing-retail-sales-analysis-2026.jpg"
               alt="Illuminated shopping cart sign above a retail entrance"
             />
           </figure>
@@ -1922,7 +1922,7 @@ baodatastudio@gmail.com`;
 
           <figure className="pricing-project-detail-cover pricing-project-detail-cover--skincare">
             <img
-              src="/pricing-demo-2.jpg"
+              src="/pricing-skincare-competitive-analysis-2026.jpg"
               alt="Pastel cosmetic products arranged on a display table"
             />
           </figure>
